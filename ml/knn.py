@@ -25,7 +25,7 @@ while i<700:
     b=0
     c=random.randint(0,100)
     d=random.randint(0,127)
-    e=random.randint(0, 2000)
+    e=random.randint(0, 200)
     noteList=[[a,b,c,d,e]]
     predict=model.predict(noteList)
     if predict:
