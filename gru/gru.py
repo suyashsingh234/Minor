@@ -52,24 +52,19 @@ model.compile(
 model.fit(x_train,y_train)
 
 # song generation
+mid = MidiFile()
+track = MidiTrack()
 
-# =============================================================================
-# mid = MidiFile()
-# track = MidiTrack()
-# 
-# currentNote=x_train[0].tolist()
-# #print(currentNote)
-# i=0
-# while i<499:
-#     feed=[currentNote]
-#     feed=np.array(feed)
-#     output=model.predict(feed)
-#     output=np.absolute(output)
-#     output=output[0].astype("int").tolist()
-#     print(output)
-#     currentNote[i+1]=output
-#     i+=1 
-# =============================================================================
+currentNote=x_train[0].tolist()
+i=0
+while i<499:
+    feed=[currentNote]
+    feed=np.array(feed)
+    output=model.predict(feed)
+    output=np.absolute(output)
+    output=output[0].tolist()
+    currentNote[i+1]=output
+    i+=1 
 
 # =============================================================================
 # for note in currentNote:
