@@ -39,7 +39,7 @@ x_train=normalize(x_train)
 y_train=normalizeY(y_train)
 
 model=keras.Sequential()
-model.add(keras.Input(shape=(500,5)))
+model.add(keras.Input(shape=(16,5)))
 model.add(keras.layers.GRU(5,activation='linear'))
 model.add(keras.layers.Dense(1*5))
 
@@ -56,6 +56,9 @@ mid = MidiFile()
 track = MidiTrack()
 
 currentNote=x_train[0].tolist()
+Note=[]
+for note in currentNote:
+    Note.append(note)
 i=0
 while i<499:
     feed=[currentNote]
@@ -63,9 +66,14 @@ while i<499:
     output=model.predict(feed)
     output=np.absolute(output)
     output=output[0].tolist()
-    currentNote[i+1]=output
+    for j in range(1,16):
+        currentNote[j-1]=currentNote[j]
+    currentNote[15]=output
+    Note.append(output)
     i+=1 
 
+for note in Note:
+    print(note)
 # =============================================================================
 # for note in currentNote:
 #     print(note)
