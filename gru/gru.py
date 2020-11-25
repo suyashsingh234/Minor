@@ -27,12 +27,12 @@ y_train=y_train
 def normalize(list):
     for i in range(0,len(list)):
         for j in range(0,len(list[i])):
-            list[i][j]=(list[i][j][0]/127,list[i][j][1]/127,list[i][j][2]/1000)
+            list[i][j]=(list[i][j][0]/127,list[i][j][1]/127,list[i][j][2]/2000)
     return list
 
 def normalizeY(list):
     for i in range(0,len(list)):
-        list[i]=(list[i][0]/127,list[i][1]/127,list[i][2]/1000)
+        list[i]=(list[i][0]/127,list[i][1]/127,list[i][2]/2000)
     return list
     
 x_train=normalize(x_train)
@@ -57,10 +57,6 @@ track = MidiTrack()
 
 currentNote=x_train[0].tolist()
 Note=[]
-# =============================================================================
-# for note in currentNote:
-#     Note.append(note)
-# =============================================================================
 i=0
 while i<499:
     feed=[currentNote]
@@ -78,30 +74,12 @@ while i<499:
     i+=1 
 
 for note in Note:
-    note=(note[0]*127,note[1]*127,note[2]*1000)
+    note=(note[0]*127,note[1]*127,note[2]*2000)
     note=[round(x) for x in note]
     (a,b,c)=note
-    print(note)
     track.append(Message('note_on',channel=0,note=a,velocity=b,time=c))
  
 mid.tracks.append(track)        
 mid.save('song_gru.mid')
     
-# =============================================================================
-# for note in currentNote:
-#     print(note)
-#     (a,b,c,d,e)=note
-#     if a:
-#         a='note_on'
-#     else:
-#         a='note_off'
-#     track.append(Message(a,channel=b,note=c,velocity=d,time=e))
-# 
-# mid.tracks.append(track)        
-# mid.save('song_gru.mid')
-# =============================================================================
-# =============================================================================
-# test=np.array([x_train[1]])
-# 
-# print( model.predict(test) )
-# =============================================================================
+
