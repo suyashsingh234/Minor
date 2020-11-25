@@ -27,21 +27,21 @@ y_train=y_train
 def normalize(list):
     for i in range(0,len(list)):
         for j in range(0,len(list[i])):
-            list[i][j]=(list[i][j][0]/1,list[i][j][1]/15,list[i][j][2]/127,list[i][j][3]/127,list[i][j][4]/1000)
+            list[i][j]=(list[i][j][0]/127,list[i][j][1]/127,list[i][j][2]/1000)
     return list
 
 def normalizeY(list):
     for i in range(0,len(list)):
-        list[i]=(list[i][0]/1,list[i][1]/15,list[i][2]/127,list[i][3]/127,list[i][4]/1000)
+        list[i]=(list[i][0]/127,list[i][1]/127,list[i][2]/1000)
     return list
     
 x_train=normalize(x_train)
 y_train=normalizeY(y_train)
 
 model=keras.Sequential()
-model.add(keras.Input(shape=(16,5)))
+model.add(keras.Input(shape=(16,3)))
 model.add(keras.layers.GRU(5,activation='linear'))
-model.add(keras.layers.Dense(1*5))
+model.add(keras.layers.Dense(1*3))
 
 model.compile(
         loss=keras.losses.MeanSquaredError(),
@@ -57,8 +57,10 @@ track = MidiTrack()
 
 currentNote=x_train[0].tolist()
 Note=[]
-for note in currentNote:
-    Note.append(note)
+# =============================================================================
+# for note in currentNote:
+#     Note.append(note)
+# =============================================================================
 i=0
 while i<499:
     feed=[currentNote]
@@ -68,19 +70,19 @@ while i<499:
     output=output[0].tolist()
     for j in range(1,16):
         currentNote[j-1]=currentNote[j]
+    currentNote[14]=output
+    Note.append(output)
+    output=(output[0],0,output[2])
     currentNote[15]=output
     Note.append(output)
     i+=1 
 
 for note in Note:
-    note=(note[0],note[1]*15,note[2]*127,note[3]*127,note[4]*1000)
+    note=(note[0]*127,note[1]*127,note[2]*1000)
     note=[round(x) for x in note]
-    (a,b,c,d,e)=note
-    if a:
-        a='note_on'
-    else:
-        a='note_off'
-    track.append(Message(a,channel=b,note=c,velocity=d,time=e))
+    (a,b,c)=note
+    print(note)
+    track.append(Message('note_on',channel=0,note=a,velocity=b,time=c))
  
 mid.tracks.append(track)        
 mid.save('song_gru.mid')

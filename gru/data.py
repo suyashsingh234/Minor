@@ -51,11 +51,11 @@ def create_data():
         
         i=0
         while i<500:
-            y_train.append(piano[i+1])
             cur_train=[]
             for k in range(0,16):
-                cur_train.append(piano[i+k])
-            x_train.append(cur_train)    
+                cur_train.append((piano[i+k][2],piano[i+k][3],piano[i+k][4]))
+            x_train.append(cur_train)   
+            y_train.append((piano[i+16][2],piano[i+16][3],piano[i+16][4]))
             i+=1
     return (x_train,y_train)
 
