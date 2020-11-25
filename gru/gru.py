@@ -21,8 +21,8 @@ y_train=np.array(y_train)
 x_train=x_train.astype("float32")
 y_train=y_train.astype("float32")
 
-x_train=x_train[:500]
-y_train=y_train[:500]
+x_train=x_train
+y_train=y_train
 
 def normalize(list):
     for i in range(0,len(list)):
@@ -73,7 +73,18 @@ while i<499:
     i+=1 
 
 for note in Note:
-    print(note)
+    note=(note[0],note[1]*15,note[2]*127,note[3]*127,note[4]*1000)
+    note=[round(x) for x in note]
+    (a,b,c,d,e)=note
+    if a:
+        a='note_on'
+    else:
+        a='note_off'
+    track.append(Message(a,channel=b,note=c,velocity=d,time=e))
+ 
+mid.tracks.append(track)        
+mid.save('song_gru.mid')
+    
 # =============================================================================
 # for note in currentNote:
 #     print(note)
